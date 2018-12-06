@@ -1,4 +1,5 @@
 import serial
+from lib import extra_functions
 
 if __name__ == "__main__":
     try:
@@ -11,22 +12,10 @@ if __name__ == "__main__":
         print(" ")
         #print("Leido: " + str(buffer))
 
-        position_match1 = buffer.find('Temp:')
-        position_match2 = buffer.find('\\xc2')
-        temperature = buffer[position_match1+5:position_match2]
-
-        position_match1 = buffer.find('Humidity:')
-        position_match2 = buffer.find('%;Luminosity')
-        humidity = buffer[position_match1+9:position_match2]
-
-        position_match1 = buffer.find('Luminosity:')
-        position_match2 = buffer.find('%;Voltaje')
-        luminosity = buffer[position_match1+11:position_match2]
-
-        position_match1 = buffer.find('Voltaje:')
-        position_match2 = buffer.find('V\\r\\n')
-        voltaje = buffer[position_match1+8:position_match2]
-
+        temperature = extra_functions.recorta("Temp:", "\\xc2", buffer)
+        humidity = extra_functions.recorta("Humidity:", "%;Luminosity", buffer)
+        luminosity = extra_functions.recorta("Luminosity:", "%;Voltaje", buffer)
+        voltaje = extra_functions.recorta("Voltaje:", "V\\r\\n", buffer)
 
         print('La temperatura es de: ' + str(temperature) + " grados")
         print('La humedad es del: ' + str(humidity) + " %")
